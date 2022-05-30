@@ -24,29 +24,29 @@ public class App {
             session.beginTransaction();
 
             // Updating
-            /*Person p = (Person) session.get(Person.class, 2);
+            Person p = (Person) session.get(Person.class, 2);
             System.out.println(p.getName());
-            p.setName("New name");*/
+            p.setName("New name");
 
 
             //Deleting
-            /*Person p = (Person) session.get(Person.class, 2);
-            session.delete(p);*/
+            Person p1 = (Person) session.get(Person.class, 2);
+            session.delete(p1);
 
 
             // Adding
-            /*Person p = new Person("Some name", 60);
-            session.save(p);*/
+            Person p2 = new Person("Some name", 60);
+            session.save(p);
 
 
             //HQL
-            /*List<Person> lst = session.createQuery("FROM Person where name LIKE 'T%'").getResultList();
+            List<Person> lst = session.createQuery("FROM Person where name LIKE 'T%'").getResultList();
             session.createQuery("delete from Person where age = 30").executeUpdate();
-            System.out.println(lst);*/
+            System.out.println(lst);
 
 
             //One to many
-            /*Person person = session.get(Person.class, 3);
+            Person person = session.get(Person.class, 3);
             System.out.println(person);
 
             List<Item> items = person.getItems();
@@ -56,48 +56,46 @@ public class App {
             Item item = session.get(Item.class, 5);
             System.out.println(item);
 
-            System.out.println(item.getOwner());*/
+            System.out.println(item.getOwner());
 
 
 
-            /*Person person = session.get(Person.class, 2);
-            Item newItem = new Item("NEW ITEM", person);
+            Person person1 = session.get(Person.class, 2);
+            Item newItem = new Item("NEW ITEM");
 
-            person.getItems().add(newItem);
-            session.save(newItem);*/
-
-
-            /*Person person = new Person("Test person", 30);
-            Item newItem = new Item("Item2", person);
-
-            person.setItems(new ArrayList<>(Collections.singletonList(newItem)));
-
-            session.save(person);
-            session.save(newItem);*/
+            person1.getItems().add(newItem);
+            session.save(newItem);
 
 
-            /*Person person = session.get(Person.class, 3);
-            List<Item> items = person.getItems();
 
-            for(Item item : items){
-                session.remove(item);
+
+            Person person2 = session.get(Person.class, 3);
+            List<Item> items2 = person.getItems();
+
+            for(Item item1 : items2){
+                session.remove(item1);
             }
-            person.getItems().clear();*/
+            person.getItems().clear();
 
-            /*Person person = session.get(Person.class, 2);
-            session.remove(person);
-            person.getItems().forEach(i -> i.setOwner(null));*/
+            Person person3 = session.get(Person.class, 2);
+            session.remove(person3);
+            person3.getItems().forEach(i -> i.setOwner(null));
 
 
             //cascading
-            Person p = new Person("Test cascade", 30);
+            Person p4 = new Person("Test cascade", 30);
 
-            p.addItem(new Item("Item1"));
-            p.addItem(new Item("Item2"));
-            p.addItem(new Item("Item3"));
-            session.save(p);
+            p4.addItem(new Item("Item1"));
+            p4.addItem(new Item("Item2"));
+            p4.addItem(new Item("Item3"));
+            session.save(p4);
+
 
             session.getTransaction().commit();
+
+
+
+
 
         } finally {
             sessionFactory.close();
