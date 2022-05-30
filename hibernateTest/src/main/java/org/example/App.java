@@ -89,7 +89,13 @@ public class App {
             person.getItems().forEach(i -> i.setOwner(null));*/
 
 
+            //cascading
+            Person p = new Person("Test cascade", 30);
 
+            p.addItem(new Item("Item1"));
+            p.addItem(new Item("Item2"));
+            p.addItem(new Item("Item3"));
+            session.save(p);
 
             session.getTransaction().commit();
 
