@@ -1,0 +1,1 @@
+select person0_.id as id1_0_, person0_.age as age2_0_, person0_.name as name3_0_ from Person person0_;

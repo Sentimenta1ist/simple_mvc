@@ -25,7 +25,7 @@ public class BatchController {
 
     @GetMapping("/with")
     public String withBatch() {
-        personDAO.testBatchUpdate();
+        //personDAO.testBatchUpdate();
         return "redirect:/people";
     }
 }

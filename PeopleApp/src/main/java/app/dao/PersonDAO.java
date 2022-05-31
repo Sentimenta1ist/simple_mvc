@@ -1,16 +1,13 @@
 package app.dao;
 
 import app.models.Person;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,43 +15,45 @@ import java.util.Optional;
 @Component
 public class PersonDAO {
 
-
-    private final JdbcTemplate jdbcTemplate;
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public PersonDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public PersonDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
+        Session session = sessionFactory.getCurrentSession();
+        List<Person> people = session.createQuery("select p from Person p", Person.class)
+                .getResultList();
+
+        return people;
     }
 
     public Person show(int id) {
-
-        return jdbcTemplate.queryForObject("SELECT * FROM Person WHERE id=?", new BeanPropertyRowMapper<>(Person.class), id);
+        return null;
     }
 
     public Optional<Person> show(String email) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE email=?", new Object[] {email}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
+        return null;
     }
 
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO person(name, age, email, address) values(?, ?, ?, ?)", person.getName(), person.getAge(), person.getEmail(), person.getAddress());
+
     }
 
     public void update(int id, Person person) {
-        jdbcTemplate.update("UPDATE person SET name=?, age=?, email=?, address=? WHERE id=?", person.getName(), person.getAge(), person.getEmail(), person.getAddress(), id);
     }
 
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM person WHERE id=?", id);
+
     }
 
     /*
     TEST BATCH UPDATE
      */
-    public void testBatchUpdate() {
+   /* public void testBatchUpdate() {
         List<Person> people = createManyPeople(1000);
 
         jdbcTemplate.batchUpdate("INSERT INTO person VALUES(?, ?, ?, ?)",
@@ -72,15 +71,6 @@ public class PersonDAO {
                         return people.size();
                     }
                 });
-    }
+    }*/
 
-    private List<Person> createManyPeople(int n) {
-        List<Person> people = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            people.add(new Person(i, "Name" + i, 30, "test" + i + "@gmail.com", "some addr"));
-        }
-
-        return people;
-    }
 }
