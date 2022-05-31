@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.models.Person;
+import app.servises.ItemsService;
 import app.servises.PeopleService;
 import app.util.PersonValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,13 @@ import javax.validation.Valid;
 public class PeopleController {
 
     private final PeopleService peopleService;
+    private final ItemsService itemsService;
     private final PersonValidator personValidator;
 
     @Autowired
-    public PeopleController(PeopleService peopleService, PersonValidator personValidator) {
+    public PeopleController(PeopleService peopleService, ItemsService itemsService, PersonValidator personValidator) {
         this.peopleService = peopleService;
+        this.itemsService = itemsService;
         this.personValidator = personValidator;
     }
 
@@ -28,6 +31,12 @@ public class PeopleController {
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("people", peopleService.findAll());
+
+        itemsService.findByItemName("Aor");
+        itemsService.findByOwner(peopleService.findAll().get(0));
+
+        peopleService.test();
+
         return "people/index";
     }
 

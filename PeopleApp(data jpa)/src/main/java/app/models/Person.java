@@ -2,6 +2,7 @@ package app.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,6 +26,9 @@ public class Person {
     @Email(message = "Incorrect email")
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Item> items;
 
     /*@Pattern(regexp = "[A-Z]\\w+,[A-Z]\\w+,\\d{6}", message = "Address should be in this format: 'Country, City, Postal(######)'")
     @Column(name = "address")
