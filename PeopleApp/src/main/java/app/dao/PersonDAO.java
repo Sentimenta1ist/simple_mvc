@@ -22,7 +22,7 @@ public class PersonDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Person> index() {
         Session session = sessionFactory.getCurrentSession();
         List<Person> people = session.createQuery("select p from Person p", Person.class)
@@ -31,23 +31,37 @@ public class PersonDAO {
         return people;
     }
 
+    @Transactional(readOnly = true)
     public Person show(int id) {
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        Person person = session.get(Person.class, id);
+        return person;
     }
 
     public Optional<Person> show(String email) {
         return null;
     }
 
+    @Transactional(readOnly = true)
     public void save(Person person) {
-
+        Session session = sessionFactory.getCurrentSession();
+        session.save(person);
     }
 
+    @Transactional
     public void update(int id, Person person) {
+        Session session = sessionFactory.getCurrentSession();
+        Person oldPerson = session.get(Person.class, id);
+        oldPerson.setName(person.getName());
+        oldPerson.setAge(person.getAge());
+        oldPerson.setEmail(person.getEmail());
     }
 
+    @Transactional
     public void delete(int id) {
-
+        Session session = sessionFactory.getCurrentSession();
+        Person oldPerson = session.get(Person.class, id);
+        session.remove(oldPerson);
     }
 
     /*
