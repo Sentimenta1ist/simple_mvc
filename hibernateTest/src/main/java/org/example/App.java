@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.model.Item;
 import org.example.model.Person;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -67,15 +68,13 @@ public class App {
             session.save(newItem);
 
 
-
-
             Person person2 = session.get(Person.class, 3);
             List<Item> items2 = person.getItems();
 
             for(Item item1 : items2){
                 session.remove(item1);
             }
-            person.getItems().clear();
+            person2.getItems().clear();
 
             Person person3 = session.get(Person.class, 2);
             session.remove(person3);
@@ -91,11 +90,35 @@ public class App {
             session.save(p4);
 
 
+
+            // lazy loading
+            Person p5 = session.get(Person.class, 1);
+            System.out.println(p5.getItems());
+
+
+            // eager loading
+            Item i5 = session.get(Item.class, 1);
+            System.out.println(i5.getOwner());
+
+
+            session.getTransaction().commit();
+            System.out.println("Out of session");
+
+            // Open new session
+            session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+
+            // merging item from last session
+            p5 = (Person) session.merge(p5);
+
+            // loading before closing
+            Hibernate.initialize(p5.getItems());
+
             session.getTransaction().commit();
 
 
-
-
+            // works because loaded before closing
+            System.out.println(p5.getItems());
 
         } finally {
             sessionFactory.close();
