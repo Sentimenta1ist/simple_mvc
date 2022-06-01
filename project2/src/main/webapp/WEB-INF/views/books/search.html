@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book search</title>
+</head>
+<body>
+<form th:action="@{/books/search}">
+    <label> Enter start of book: </label>
+    <input type="text" th:name="start_from"/>
+    <input type="submit" value="Search!"/>
+</form>
+
+<div th:if="${start_from != null}">
+    <hr/>
+    <hr/>
+    <div th:if="${#lists.isEmpty(books)}"> No books with this starting :(</div>
+    <div th:each="book : ${books}">
+        <a th:href="@{/books/{id}(id=${book.getId()})}"
+           th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">
+            book
+        </a>
+
+        <div th:if="${book.getOwner() == null}">
+            <p>Free book</p>
+        </div>
+
+        <div th:if="${book.getOwner() != null}">
+            <p th:text="${'Owned by ' + book.getOwner().getName()}"> book </p>
+        </div>
+
+        <hr/>
+    </div>
+</div>
+</body>
+</html>
