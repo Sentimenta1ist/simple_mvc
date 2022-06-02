@@ -20,7 +20,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.personDetailsService = personDetailsService;
     }
 
-    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(personDetailsService);
     }
@@ -34,9 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // configure Spring security
 
-        http
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/login", "/error").permitAll()
+                .antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/auth/login")
