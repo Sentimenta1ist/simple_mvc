@@ -22,4 +22,9 @@ public class HelloController {
         System.out.println(personDetails);
         return "hello";
     }
+
+    @GetMapping("/admin")
+    public String admin(){
+        return "admin";
+    }
 }

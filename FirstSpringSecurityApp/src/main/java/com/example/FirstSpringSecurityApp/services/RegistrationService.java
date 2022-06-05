@@ -23,7 +23,7 @@ public class RegistrationService {
     public void register(Person person){
         String encodePassword = passwordEncoder.encode(person.getPassword());
         person.setPassword(encodePassword);
-
+        person.setRole("ROLE_USER");
         peopleRepository.save(person);
     }
 }

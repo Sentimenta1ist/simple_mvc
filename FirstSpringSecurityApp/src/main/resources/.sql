@@ -9,3 +9,9 @@ insert into person(username, year_of_birth, password) VALUES ('test2', 2001, 'te
 insert into person(username, year_of_birth, password) VALUES ('test1', 2001, 'test_pass1');
 
 select * from person;
+
+truncate table person;
+
+alter table person add column role varchar(100) not null;
+
+update person set role='ROLE_ADMIN' where id=10;
