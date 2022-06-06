@@ -45,7 +45,14 @@
             <artifactId>javaee-api</artifactId>
             <version>8.0</version>
         </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>7.0.1.Final</version>
+		</dependency>
+
+
+	</dependencies>
 
 	<build>
 		<plugins>
