@@ -2,11 +2,13 @@ package com.app.RestAppTest.servises;
 
 import com.app.RestAppTest.models.Person;
 import com.app.RestAppTest.repositories.PeopleRepository;
+import com.app.RestAppTest.util.PersonNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,7 +26,8 @@ public class PeopleService {
     }
 
     public Person findOne(int id){
-        return peopleRepository.findById(id).orElse(null);
+        Optional<Person> p =  peopleRepository.findById(id);
+        return p.orElseThrow(PersonNotFoundException::new);
     }
 
     @Transactional
