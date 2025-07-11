@@ -25,12 +25,6 @@ public class BooksController {
         this.personDAO = personDAO;
     }
 
-    @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("books", bookDAO.index());
-        return "books/index";
-    }
-
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         Book book = bookDAO.show(id);
@@ -41,23 +35,35 @@ public class BooksController {
 
         return "books/show";
     }
+    @GetMapping("/{id}")
+    public String sno2(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
+        Book book = bookDAO.show(id);
 
-    @PatchMapping("/{id}/pin_person")
-    public String pinBook(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
-        bookDAO.setPersonToBook(person.getId(), id);
-        return "redirect:/books/{id}";
+        model.addAttribute("book", book);
+        model.addAttribute("people", personDAO.index());
+        model.addAttribute("owner", bookDAO.personOfBookById(book.getPersonId()));
+
+        return "books/show";
     }
+    @GetMapping("/{id}")
+    public String sno3(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
+        Book book = bookDAO.show(id);
 
-    @PatchMapping("/{id}/release_book")
-    public String releaseBook(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
-        bookDAO.removePersonToBook(id);
-        return "redirect:/books/{id}";
+        model.addAttribute("book", book);
+        model.addAttribute("people", personDAO.index());
+        model.addAttribute("owner", bookDAO.personOfBookById(book.getPersonId()));
+
+        return "books/show";
     }
+    @GetMapping("/{id}")
+    public String sno4(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
+        Book book = bookDAO.show(id);
 
-    @GetMapping("/new")
-    public String newPerson(Model model) {
-        model.addAttribute("book", new Book());
-        return "books/new";
+        model.addAttribute("book", book);
+        model.addAttribute("people", personDAO.index());
+        model.addAttribute("owner", bookDAO.personOfBookById(book.getPersonId()));
+
+        return "books/show";
     }
 
     @PostMapping()
