@@ -41,6 +41,26 @@ public class BooksController {
 
         return "books/show";
     }
+    @GetMapping("/{id}")
+    public String sho2(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
+        Book book = bookDAO.show(id);
+
+        model.addAttribute("book", book);
+        model.addAttribute("people", personDAO.index());
+        model.addAttribute("owner", bookDAO.personOfBookById(book.getPersonId()));
+
+        return "books/show";
+    }
+    @GetMapping("/{id}")
+    public String sho3(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
+        Book book = bookDAO.show(id);
+
+        model.addAttribute("book", book);
+        model.addAttribute("people", personDAO.index());
+        model.addAttribute("owner", bookDAO.personOfBookById(book.getPersonId()));
+
+        return "books/show";
+    }
 
     @PatchMapping("/{id}/pin_person")
     public String pinBook(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
